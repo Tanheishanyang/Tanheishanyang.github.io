@@ -583,19 +583,221 @@ main {
   gap: 20px;
 }
 
-.map-placeholder {
-  height: 180px;
+.tracking-map {
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(45, 122, 86, 0.18), rgba(87, 178, 135, 0.4));
-  position: relative;
+  background: linear-gradient(135deg, rgba(45, 122, 86, 0.08), rgba(87, 178, 135, 0.18));
+  padding: 18px;
+  display: grid;
+  gap: 16px;
 }
 
-.map-placeholder::after {
+.map-canvas {
+  position: relative;
+  height: 220px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: linear-gradient(160deg, rgba(45, 122, 86, 0.12), rgba(87, 178, 135, 0.24));
+}
+
+.map-canvas::before {
   content: '';
   position: absolute;
-  inset: 26px;
-  border: 2px dashed rgba(255, 255, 255, 0.6);
+  inset: 0;
+  background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 28px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.map-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.map-backdrop * {
+  transition: opacity var(--transition);
+}
+
+.map-block {
+  fill: rgba(255, 255, 255, 0.18);
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 2;
+  backdrop-filter: saturate(130%);
+}
+
+.map-block--market {
+  fill: rgba(87, 178, 135, 0.32);
+}
+
+.map-block--community {
+  fill: rgba(45, 122, 86, 0.28);
+}
+
+.map-water {
+  fill: rgba(48, 148, 196, 0.28);
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 2;
+}
+
+.map-park {
+  fill: rgba(120, 190, 140, 0.3);
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 2;
+  stroke-dasharray: 10 8;
+}
+
+.map-block--tower {
+  fill: rgba(255, 255, 255, 0.24);
+}
+
+.map-street {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.map-street--main {
+  stroke: rgba(255, 255, 255, 0.82);
+  stroke-width: 7;
+}
+
+.map-street--secondary {
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 4;
+  stroke-dasharray: 6 10;
+}
+
+.map-poi {
+  fill: var(--color-on-primary);
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  opacity: 0.9;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: poiPulse 5.5s ease-in-out infinite;
+}
+
+.map-poi--drop {
+  stroke: rgba(255, 255, 255, 0.75);
+  fill: rgba(255, 255, 255, 0.85);
+  animation-delay: 1.2s;
+}
+
+.map-canvas:hover .map-block {
+  opacity: 0.9;
+}
+
+.map-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.map-path path {
+  fill: none;
+}
+
+.map-path-track {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 8 14;
+  animation: routeDash 6s linear infinite;
+}
+
+.map-path-progress {
+  stroke: var(--color-primary);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: routeProgress 12s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(45, 122, 86, 0.28));
+}
+
+.map-pin {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  max-width: 210px;
+}
+
+.map-pin-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(45, 122, 86, 0.18);
+  margin-top: 6px;
+}
+
+.map-pin-info {
+  background: var(--color-surface);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 24px rgba(31, 42, 36, 0.12);
+  display: grid;
+  gap: 4px;
+}
+
+.map-pin-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.map-pin-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  line-height: 1.4;
+}
+
+.map-pickup {
+  bottom: 24px;
+  left: 32px;
+}
+
+.map-dropoff {
+  top: 26px;
+  right: 26px;
+  align-items: flex-end;
+}
+
+.map-dropoff .map-pin-info {
+  text-align: right;
+}
+
+.map-driver-bubble {
+  background: var(--color-surface);
   border-radius: var(--radius-md);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: flex-start;
+}
+
+.driver-badge {
+  background: rgba(45, 122, 86, 0.14);
+  color: var(--color-primary);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+
+.driver-status {
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 .tracking-steps {
@@ -640,6 +842,42 @@ main {
   width: 0;
   background: var(--color-primary);
   transition: width 0.4s ease;
+}
+
+@keyframes routeDash {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -80;
+  }
+}
+
+@keyframes routeProgress {
+  0% {
+    stroke-dashoffset: 240;
+  }
+  60% {
+    stroke-dashoffset: 140;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes poiPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
 }
 
 .report-grid {
@@ -978,6 +1216,24 @@ body.mobile-preview .supplier-grid {
   gap: 18px;
 }
 
+body.mobile-preview .tracking-map {
+  padding: 14px;
+}
+
+body.mobile-preview .map-canvas {
+  height: 200px;
+}
+
+body.mobile-preview .map-driver-bubble {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+body.mobile-preview .driver-badge {
+  width: auto;
+}
+
 body.mobile-preview .supplier-content {
   grid-template-columns: 1fr;
   gap: 16px;
@@ -1126,6 +1382,19 @@ body.mobile-preview[data-theme='dark'] .home-indicator {
   .action-row button {
     width: auto;
     max-width: 100%;
+  }
+
+  .tracking-map {
+    padding: 20px;
+  }
+
+  .map-canvas {
+    height: 240px;
+  }
+
+  .map-driver-bubble {
+    align-items: center;
+    gap: 10px 20px;
   }
 }
 
@@ -1332,7 +1601,48 @@ body.mobile-preview[data-theme='dark'] .home-indicator {
         </header>
 
         <section class="tracking-card" aria-live="polite">
-          <div class="map-placeholder" role="img" aria-label="Stylised delivery map with highlighted route" data-i18n-aria-label="mapAriaLabel"></div>
+          <div class="tracking-map">
+            <div class="map-canvas" role="img" aria-label="Stylised delivery map showing courier route" data-i18n-aria-label="mapAriaLabel">
+              <svg class="map-backdrop" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <path class="map-water" d="M214 18 Q296 30 290 114 Q284 156 236 166 Q204 170 190 140 Q210 108 218 88 Z" />
+                <path class="map-park" d="M14 76 Q34 18 96 24 Q88 64 32 114 Z" />
+                <rect class="map-block map-block--residential" x="20" y="122" width="80" height="52" rx="14" />
+                <rect class="map-block map-block--residential" x="112" y="132" width="64" height="50" rx="14" />
+                <rect class="map-block map-block--market" x="46" y="42" width="90" height="52" rx="16" />
+                <rect class="map-block map-block--community" x="188" y="108" width="90" height="62" rx="18" />
+                <rect class="map-block map-block--tower" x="150" y="62" width="54" height="40" rx="12" />
+                <path class="map-street map-street--main" d="M16 156 H268" />
+                <path class="map-street map-street--secondary" d="M62 156 V116" />
+                <path class="map-street map-street--secondary" d="M124 156 V108" />
+                <path class="map-street map-street--secondary" d="M124 108 L232 132" />
+                <path class="map-street map-street--secondary" d="M208 156 H268" />
+                <circle class="map-poi map-poi--pickup" cx="62" cy="156" r="7" />
+                <circle class="map-poi map-poi--drop" cx="224" cy="132" r="6" />
+              </svg>
+              <svg class="map-path" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <path class="map-path-track" d="M62 156 H124 V108 L224 132" />
+                <path class="map-path-progress" d="M62 156 H124 V108 L224 132" />
+              </svg>
+              <div class="map-pin map-pickup">
+                <span class="map-pin-dot" aria-hidden="true"></span>
+                <div class="map-pin-info">
+                  <span class="map-pin-title" data-i18n="mapPickupTitle">Pickup hub</span>
+                  <span class="map-pin-subtitle" data-i18n="mapPickupSubtitle">Volunteers are packing the hamper</span>
+                </div>
+              </div>
+              <div class="map-pin map-dropoff">
+                <span class="map-pin-dot" aria-hidden="true"></span>
+                <div class="map-pin-info">
+                  <span class="map-pin-title" data-i18n="mapDropoffTitle">Community drop-off</span>
+                  <span class="map-pin-subtitle" data-i18n="mapDropoffSubtitle">Shared cool locker near you</span>
+                </div>
+              </div>
+            </div>
+            <div class="map-driver-bubble">
+              <span class="driver-badge" data-i18n="mapCourierLabel">Courier Jade</span>
+              <span class="driver-status" data-i18n="mapCourierStatusPickup">Heading to the pickup hub</span>
+            </div>
+          </div>
           <ol class="tracking-steps" id="tracking-steps"></ol>
           <div class="progress-bar" aria-hidden="true">
             <div id="progress-indicator" class="progress-indicator"></div>
@@ -1599,7 +1909,14 @@ const translations = {
     trackingTitle: 'Track your delivery',
     trackingInstruction: 'Task 3 (continued): Follow the delivery stages to monitor when food arrives.',
     trackingRestart: 'Restart tracking demo',
-    mapAriaLabel: 'Stylised delivery map with highlighted route',
+    mapAriaLabel: 'Stylised delivery map showing the courier travelling from pickup to community drop-off',
+    mapPickupTitle: 'Pickup hub',
+    mapPickupSubtitle: 'Volunteers are packing the hamper here',
+    mapDropoffTitle: 'Community drop-off',
+    mapDropoffSubtitle: 'Shared cool locker close to your home',
+    mapCourierLabel: 'Courier Jade',
+    mapCourierStatusPickup: 'Heading to the pickup hub',
+    mapCourierStatusDropoff: 'Next: delivering to your community drop-off',
     reportTitle: 'Savings & sustainability report',
     reportInstruction: 'Optional Task: Review your impact after ordering surplus community hampers.',
     reportSavingsTitle: 'Money saved',
@@ -1710,7 +2027,14 @@ const translations = {
     trackingTitle: '配送状況を確認',
     trackingInstruction: 'タスク3: 配送ステップを追跡して到着を確認しましょう。',
     trackingRestart: '追跡デモを再開',
-    mapAriaLabel: '配送ルートを示すスタイライズされた地図',
+    mapAriaLabel: '配送員が集荷地点からコミュニティ受け渡し先へ向かう様子を示すスタイライズされた地図',
+    mapPickupTitle: '集荷ハブ',
+    mapPickupSubtitle: 'ここでボランティアがハンパーを準備しています',
+    mapDropoffTitle: 'コミュニティ受け渡し',
+    mapDropoffSubtitle: 'お近くの共有クールロッカー',
+    mapCourierLabel: '配送員 Jade',
+    mapCourierStatusPickup: '集荷ハブへ向かっています',
+    mapCourierStatusDropoff: '次はコミュニティ受け渡し地点へ配送',
     reportTitle: '節約とサステナビリティレポート',
     reportInstruction: 'オプション: 余剰ハンパー注文後の効果を確認します。',
     reportSavingsTitle: '節約金額',
@@ -1821,7 +2145,14 @@ const translations = {
     trackingTitle: 'अपनी डिलीवरी ट्रैक करें',
     trackingInstruction: 'कार्य 3: डिलीवरी के चरणों को देखें और आगमन पर नज़र रखें।',
     trackingRestart: 'ट्रैकिंग डेमो पुनः प्रारंभ',
-    mapAriaLabel: 'उज्ज्वल मार्ग वाला शैलीकृत डिलीवरी मानचित्र',
+    mapAriaLabel: 'शैलीदार डिलीवरी मानचित्र जिसमें कूरियर को पिकअप से सामुदायिक डिलीवरी तक जाते दिखाया गया है',
+    mapPickupTitle: 'पिकअप केंद्र',
+    mapPickupSubtitle: 'यहाँ स्वयंसेवक हैम्पर तैयार कर रहे हैं',
+    mapDropoffTitle: 'समुदाय डिलीवरी बिंदु',
+    mapDropoffSubtitle: 'आपके पास स्थित साझा कूल लॉकर',
+    mapCourierLabel: 'कूरियर जेड',
+    mapCourierStatusPickup: 'पिकअप केंद्र की ओर जा रही है',
+    mapCourierStatusDropoff: 'अगला चरण: आपके समुदाय डिलीवरी बिंदु पर पहुँचाना',
     reportTitle: 'बचत और स्थिरता रिपोर्ट',
     reportInstruction: 'वैकल्पिक: अधिशेष हैम्पर ऑर्डर के बाद प्रभाव देखें।',
     reportSavingsTitle: 'बचाई गई राशि',
@@ -1932,7 +2263,14 @@ const translations = {
     trackingTitle: 'Suivre la livraison',
     trackingInstruction: 'Tâche 3 : suivez les étapes de livraison pour connaître l’arrivée.',
     trackingRestart: 'Relancer la démo de suivi',
-    mapAriaLabel: 'Carte stylisée de livraison avec itinéraire mis en évidence',
+    mapAriaLabel: 'Carte stylisée montrant le coursier entre le point de retrait et le dépôt communautaire',
+    mapPickupTitle: 'Point de retrait',
+    mapPickupSubtitle: 'Les bénévoles préparent le panier ici',
+    mapDropoffTitle: 'Point de dépôt communautaire',
+    mapDropoffSubtitle: 'Casier réfrigéré partagé près de chez vous',
+    mapCourierLabel: 'Livreur Jade',
+    mapCourierStatusPickup: 'En route vers le point de retrait',
+    mapCourierStatusDropoff: 'Étape suivante : dépôt au point communautaire',
     reportTitle: 'Rapport économies & durabilité',
     reportInstruction: 'Optionnel : mesurez votre impact après les paniers surplus.',
     reportSavingsTitle: 'Économies réalisées',
@@ -2044,7 +2382,14 @@ const translations = {
     trackingTitle: '追踪配送',
     trackingInstruction: '任务3：跟随配送阶段，掌握到货时间。',
     trackingRestart: '重新开始追踪演示',
-    mapAriaLabel: '带高亮路线的配送示意图',
+    mapAriaLabel: '展示配送员从取餐点前往社区交付点的示意地图',
+    mapPickupTitle: '取餐点',
+    mapPickupSubtitle: '志愿者正在这里整理套餐',
+    mapDropoffTitle: '社区交付点',
+    mapDropoffSubtitle: '靠近您的共享冷柜',
+    mapCourierLabel: '配送员 Jade',
+    mapCourierStatusPickup: '前往取餐点途中',
+    mapCourierStatusDropoff: '下一站：送往社区交付点',
     reportTitle: '节约与可持续报告',
     reportInstruction: '可选：查看订购余量套餐后的影响。',
     reportSavingsTitle: '节省金额',
