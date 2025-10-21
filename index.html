@@ -427,10 +427,12 @@ main {
   flex-direction: column;
   gap: 12px;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .action-row button {
   width: 100%;
+  max-width: 100%;
 }
 
 .primary-btn,
@@ -1117,10 +1119,13 @@ body.mobile-preview[data-theme='dark'] .home-indicator {
   .action-row {
     flex-direction: row;
     align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .action-row button {
     width: auto;
+    max-width: 100%;
   }
 }
 
