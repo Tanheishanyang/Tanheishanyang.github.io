@@ -305,10 +305,11 @@ main {
 .supplier-card {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  border: 1px solid var(--color-border);
+  padding: 22px;
   box-shadow: var(--shadow-sm);
   display: grid;
-  gap: 14px;
+  gap: 18px;
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
@@ -349,30 +350,70 @@ main {
   color: var(--color-primary);
 }
 
-.supplier-meta {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
+.supplier-body {
+  display: grid;
+  gap: 14px;
+}
+
+.supplier-description {
+  margin: 0;
   color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.supplier-meta {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  font-size: 0.9rem;
+}
+
+.supplier-meta span {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.supplier-content {
+  display: grid;
+  gap: 18px;
+}
+
+.supplier-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .hamper-summary {
   background: var(--color-surface-alt);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: 18px;
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 
 .hamper-summary h4 {
   margin: 0;
+  font-size: 1.05rem;
 }
 
 .hamper-summary p {
   margin: 0;
   color: var(--color-muted);
   font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.hamper-summary p strong {
+  color: var(--color-primary);
+  font-size: 1.05rem;
 }
 
 .supplier-footnote {
@@ -383,8 +424,13 @@ main {
 
 .action-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 12px;
+  width: 100%;
+}
+
+.action-row button {
+  width: 100%;
 }
 
 .primary-btn,
@@ -930,6 +976,23 @@ body.mobile-preview .supplier-grid {
   gap: 18px;
 }
 
+body.mobile-preview .supplier-content {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+body.mobile-preview .supplier-actions {
+  justify-content: flex-start;
+}
+
+body.mobile-preview .action-row {
+  flex-direction: column;
+}
+
+body.mobile-preview .action-row button {
+  width: 100%;
+}
+
 body.mobile-preview .filter-panel {
   display: flex;
   flex-direction: column;
@@ -1034,6 +1097,30 @@ body.mobile-preview[data-theme='dark'] .home-indicator {
   .primary-filters .distance-field {
     flex: 0.9;
     min-width: 220px;
+  }
+
+  .supplier-card {
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .supplier-content {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 22px;
+    align-items: stretch;
+  }
+
+  .supplier-actions {
+    justify-content: space-between;
+  }
+
+  .action-row {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .action-row button {
+    width: auto;
   }
 }
 
@@ -2266,18 +2353,24 @@ function renderSuppliers(list) {
             </div>
             ${badge}
           </div>
-          <p>${supplier.description}</p>
-          <div class="supplier-meta">${supplierMeta}</div>
-          <div class="hamper-summary">
-            <h4>${item.name}</h4>
-            <p>${item.notes}</p>
-            <p><strong>${priceText}</strong> &middot; ${hamperMeta}</p>
+          <div class="supplier-body">
+            <p class="supplier-description">${supplier.description}</p>
+            <div class="supplier-meta">${supplierMeta}</div>
           </div>
-          <div class="action-row">
-            <button class="primary-btn" data-action="add-cart" data-supplier="${supplier.id}" data-item="${item.id}">${addLabel}</button>
-            <button class="secondary-btn" data-action="compare" data-supplier="${supplier.id}">${compareLabel}</button>
+          <div class="supplier-content">
+            <div class="hamper-summary">
+              <h4>${item.name}</h4>
+              <p>${item.notes}</p>
+              <p><strong>${priceText}</strong> &middot; ${hamperMeta}</p>
+            </div>
+            <div class="supplier-actions">
+              <div class="action-row">
+                <button class="primary-btn" data-action="add-cart" data-supplier="${supplier.id}" data-item="${item.id}">${addLabel}</button>
+                <button class="secondary-btn" data-action="compare" data-supplier="${supplier.id}">${compareLabel}</button>
+              </div>
+              <p class="supplier-footnote">${deliveryText}</p>
+            </div>
           </div>
-          <p class="supplier-footnote">${deliveryText}</p>
         </article>
       `;
     })
