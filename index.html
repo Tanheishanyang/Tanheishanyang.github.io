@@ -207,6 +207,18 @@ main {
   flex-direction: column;
 }
 
+.primary-filters {
+  width: 100%;
+}
+
+.primary-filters .field {
+  width: 100%;
+}
+
+.filter-panel .toggles {
+  grid-column: 1 / -1;
+}
+
 .field label {
   font-weight: 600;
 }
@@ -1005,6 +1017,24 @@ body.mobile-preview[data-theme='dark'] .home-indicator {
   .field-group .field {
     flex: 1;
   }
+
+  .primary-filters {
+    gap: 16px;
+  }
+
+  .primary-filters .search-field {
+    flex: 1.4;
+  }
+
+  .primary-filters .price-field {
+    flex: 0.7;
+    min-width: 180px;
+  }
+
+  .primary-filters .distance-field {
+    flex: 0.9;
+    min-width: 220px;
+  }
 }
 
 @media (min-width: 960px) {
@@ -1064,13 +1094,13 @@ body.mobile-preview[data-theme='dark'] .home-indicator {
         </header>
 
         <form id="filter-form" class="filter-panel" aria-label="Search filters" data-i18n-aria-label="filtersAriaLabel">
-          <div class="field">
-            <label for="search-input" data-i18n="searchLabel">Search by name or location</label>
-            <input id="search-input" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Try 'Outback' or 'Remote'" />
-          </div>
+          <div class="field-group primary-filters">
+            <div class="field search-field">
+              <label for="search-input" data-i18n="searchLabel">Search by name or location</label>
+              <input id="search-input" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Try 'Outback' or 'Remote'" />
+            </div>
 
-          <div class="field-group">
-            <div class="field">
+            <div class="field price-field">
               <label for="price-filter" data-i18n="priceLabel">Price band</label>
               <select id="price-filter">
                 <option value="all" data-i18n="priceAny">Any</option>
@@ -1080,7 +1110,7 @@ body.mobile-preview[data-theme='dark'] .home-indicator {
               </select>
             </div>
 
-            <div class="field">
+            <div class="field distance-field">
               <label for="distance-filter" data-i18n="distanceLabel">Max distance (km)</label>
               <input id="distance-filter" type="range" min="5" max="60" value="40" step="5" />
               <output id="distance-output" for="distance-filter">40 km</output>
